@@ -1,15 +1,13 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Query, ValidationPipe } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
-import { TaskStatus } from "./task.model";
+import { TasksQueryDto } from "./task.dto";
 
 @Controller("tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  getTasks(
-    @Query("status") status?: TaskStatus,
-    @Query("page") page?: number,
-    @Query("limit") limit?: number,
-  ) {}
+  getAllTasks(@Query(new ValidationPipe({transform: true})) query: TasksQueryDto) {
+    return this.tasksService.getFilteredTasks(query);
+  }
 }
