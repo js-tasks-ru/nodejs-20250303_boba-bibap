@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Task, TaskStatus } from "./task.model";
+import { TasksQueryDto } from "./task.dto";
 
 @Injectable()
 export class TasksService {
@@ -23,22 +24,36 @@ export class TasksService {
       status: TaskStatus.COMPLETED,
     },
     {
-      id: "4",
-      title: "Task 4",
-      description: "Fourth task",
-      status: TaskStatus.PENDING,
-    },
-    {
       id: "5",
       title: "Task 5",
       description: "Fifth task",
       status: TaskStatus.IN_PROGRESS,
     },
+    {
+      id: "4",
+      title: "Task 4",
+      description: "Fourth task",
+      status: TaskStatus.PENDING,
+    }
   ];
 
-  getFilteredTasks(
-    status?: TaskStatus,
-    page?: number,
-    limit?: number,
-  ): Task[] {}
+  getFilteredTasks(query : TasksQueryDto): Task[] {
+    const {status,page,limit, sortBy} = query
+    let filteredTasks: Task[] = this.tasks;
+    if( status ) {
+      filteredTasks = filteredTasks.filter(task => task.status === status);
+    }
+
+    if (sortBy) {
+      filteredTasks.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));
+    }
+
+    if(page && limit) {
+      const startIndex = (page - 1) * limit;
+      return filteredTasks.slice(startIndex, startIndex + limit);
+    }
+
+    return filteredTasks;
+
+  }
 }
