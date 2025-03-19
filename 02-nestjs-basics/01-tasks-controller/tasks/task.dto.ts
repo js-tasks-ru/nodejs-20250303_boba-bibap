@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export enum TaskStatus {
   IN_PROGRESS = 'in_progress',
@@ -21,4 +21,20 @@ export class CreateTaskDto {
 
   @IsEnum(TaskStatus)
   status: TaskStatus;
+}
+
+export class TasksQueryDto {
+  @IsOptional()
+  @IsEnum(TaskStatus)
+  status?: TaskStatus;
+
+  @IsOptional()
+  @IsNumber()
+  @IsInt()
+  page?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @IsInt()
+  limit?: number;
 }
