@@ -5,19 +5,19 @@ import {
   Get,
   Param,
   Patch,
-  Post,
+  Post, Query, ValidationPipe
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { Task } from "./task.model";
-import { CreateTaskDto } from "./task.dto";
+import { CreateTaskDto, TasksQueryDto } from "./task.dto";
 
 @Controller("tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  getAllTasks() {
-    return this.tasksService.getAllTasks();
+  getAllTasks(@Query(new ValidationPipe({transform: true})) query: TasksQueryDto) {
+    return this.tasksService.getAllTasks(query);
   }
 
   @Get(":id")
