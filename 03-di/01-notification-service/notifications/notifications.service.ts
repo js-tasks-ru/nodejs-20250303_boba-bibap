@@ -15,12 +15,12 @@ export class NotificationsService {
         }
     }
     async sendEmail(to: string, subject: string, message: string): Promise<void> {
-        const output = `Email sent to ${to}: [Новая задача] Вы назначены ответственным за задачу: "${message}"`
+        const output = `Email sent to ${to}: ${subject} Вы назначены ответственным за задачу: "${message}"`
         await this.logToFile(output);
         console.log(output);
     }
     async sendSMS(to: string, message: string): Promise<void> {
-        const output = `SMS sent to ${to}: Статус задачи "${message}" изменён на "completed"`
+        const output = `SMS sent to ${to}: ${message}`
         await this.logToFile(output);
         console.log(output);
     }
